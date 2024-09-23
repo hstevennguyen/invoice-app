@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice for {{ shop_name }} - {{ date }}</title>
+</head>
+<body>
+    <h1>Invoice for {{ shop_name }}</h1>
+    <p>Date: {{ date }}</p>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item['Item'] }}</td>
+                <td>{{ item['Quantity'] }}</td>
+                <td>{{ item['Price'] }}</td>
+                <td>{{ item['Subtotal'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Total: {{ total_delivery }}</h3>
+</body>
+</html>
