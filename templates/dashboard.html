@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Dashboard</title>
+</head>
+<body>
+    <h1>Dashboard</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Shop Name</th>
+                <th>Date</th>
+                <th>Total Delivery</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for invoice in invoices %}
+            <tr>
+                <td>{{ invoice['Shop Name'] }}</td>
+                <td>{{ invoice['Date'] }}</td>
+                <td>{{ invoice['Total Delivery'] }}</td>
+                <td><a href="/print_invoice/{{ invoice['Shop Name'] }}/{{ invoice['Date'] }}">Print</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="/create_invoice">Create New Invoice</a>
+</body>
+</html>
