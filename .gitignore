@@ -1,0 +1,17 @@
+# Ignore the virtual environment folder
+venv/
+
+# Ignore Python bytecode files
+__pycache__/
+*.pyc
+
+# Ignore the credentials file
+credentials.json
+
+# Ignore other system files like logs, temporary files, or IDE-specific files
+*.log
+*.DS_Store
+.env
+
+# Optional: Ignore VSCode-specific files
+.vscode/
