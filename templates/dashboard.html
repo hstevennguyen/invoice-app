@@ -13,17 +13,17 @@
             <tr>
                 <th>Shop Name</th>
                 <th>Date</th>
-                <th>Total Delivery</th>
+                <th>Invoice Total</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            {% for invoice in invoices %}
+            {% for (shop_name, date), invoice_data in invoices.items() %}
             <tr>
-                <td>{{ invoice['Shop Name'] }}</td>
-                <td>{{ invoice['Date'] }}</td>
-                <td>{{ invoice['Total Delivery'] }}</td>
-                <td><a href="/print_invoice/{{ invoice['Shop Name'] }}/{{ invoice['Date'] }}">Print</a></td>
+                <td>{{ shop_name }}</td>
+                <td>{{ date }}</td>
+                <td>{{ invoice_data['total_delivery'] }}</td>
+                <td><a href="/print_invoice/{{ shop_name }}/{{ date }}">Print</a></td>
             </tr>
             {% endfor %}
         </tbody>

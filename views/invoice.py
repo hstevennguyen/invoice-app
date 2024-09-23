@@ -13,17 +13,7 @@ scope = ["https://spreadsheets.google.com/feeds",
 
 creds = ServiceAccountCredentials.from_json_keyfile_name('credentials.json', scope)
 client = gspread.authorize(creds)
-
-# Open the spreadsheet by name or use Sheet ID
 sheet = client.open("Invoice App").sheet1
-
-# Check if the header is already in place, if not, add it
-def add_headers_if_missing():
-    existing_headers = sheet.row_values(1)
-    if not existing_headers:
-        # Add headers if the sheet is empty
-        headers = ["Shop Name", "Date", "Item", "Quantity", "Price", "Subtotal", "Total for Invoice"]
-        sheet.insert_row(headers, 1)  # Insert headers at the first row
 
 @invoice_bp.route('/create_invoice', methods=['GET', 'POST'])
 def create_invoice():
@@ -35,29 +25,26 @@ def create_invoice():
         quantities = request.form.getlist('quantity[]')
         prices = request.form.getlist('price[]')
 
-        # Consolidate all items into one invoice
-        total_delivery = 0  # To store total price of all items
+        total_delivery = 0
         rows = []
-        
+
+        # Calculate the subtotals and total delivery
         for dessert_name, quantity, price in zip(dessert_names, quantities, prices):
             quantity = int(quantity)
             price = float(price)
             subtotal = quantity * price
-            total_delivery += subtotal  # Add each subtotal to the overall total
-            # Collect the row for each item
+            total_delivery += subtotal
+            # Collect the row for each item without adding total delivery yet
             rows.append([shop_name, date_of_delivery, dessert_name, quantity, price, subtotal])
 
-        # Add headers if they are missing
-        add_headers_if_missing()
-
-        # Append rows for all items
-        for row in rows:
+        # Append all the invoice items to Google Sheets
+        for index, row in enumerate(rows):
+            # For the last row, append the total delivery in the "Total for Invoice" column
+            if index == len(rows) - 1:
+                row.append(total_delivery)
+            else:
+                row.append('')  # Leave the "Total for Invoice" column blank for all but the last item
             sheet.append_row(row)
-        
-        # Append a final row for the total delivery
-        # Including an empty row before the total price to separate items from the total
-        sheet.append_row([shop_name, date_of_delivery, "", "", "", "", total_delivery])
-        sheet.append_row([f"Total Price for {shop_name}: ", "", "", "", "", "", total_delivery])
 
         return redirect(url_for('dashboard.dashboard'))
 

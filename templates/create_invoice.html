@@ -4,6 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Invoice</title>
+    <script>
+        function addItem() {
+            // Create a new item row
+            var div = document.createElement('div');
+            div.classList.add('item-row');
+            div.innerHTML = `
+                <label for="dessert_name">Dessert Name:</label>
+                <input type="text" name="dessert_name[]" required>
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity[]" required>
+                <label for="price">Price per Dessert:</label>
+                <input type="number" step="0.01" name="price[]" required>
+                <button type="button" onclick="removeItem(this)">Remove</button>
+                <br>`;
+            document.getElementById('items').appendChild(div);
+        }
+
+        function removeItem(button) {
+            // Remove the parent row (the entire div)
+            button.parentElement.remove();
+        }
+    </script>
 </head>
 <body>
     <h1>Create Invoice</h1>
@@ -12,32 +34,20 @@
         <input type="text" id="shop_name" name="shop_name" required><br><br>
 
         <div id="items">
-            <div>
+            <div class="item-row">
                 <label for="dessert_name">Dessert Name:</label>
                 <input type="text" name="dessert_name[]" required>
                 <label for="quantity">Quantity:</label>
                 <input type="number" name="quantity[]" required>
                 <label for="price">Price per Dessert:</label>
                 <input type="number" step="0.01" name="price[]" required>
+                <button type="button" onclick="removeItem(this)">Remove</button>
+                <br>
             </div>
         </div>
-        
+
         <button type="button" onclick="addItem()">Add More Desserts</button><br><br>
         <button type="submit">Create Invoice</button>
     </form>
-
-    <script>
-        function addItem() {
-            var div = document.createElement('div');
-            div.innerHTML = `
-                <label for="dessert_name">Dessert Name:</label>
-                <input type="text" name="dessert_name[]" required>
-                <label for="quantity">Quantity:</label>
-                <input type="number" name="quantity[]" required>
-                <label for="price">Price per Dessert:</label>
-                <input type="number" step="0.01" name="price[]" required><br>`;
-            document.getElementById('items').appendChild(div);
-        }
-    </script>
 </body>
 </html>
